@@ -1,0 +1,11 @@
+- When using Socket.Io, use emit instead of send
+
+- you can send many things to back-end, unlimited
+  whatever you want
+
+- When you want to notify front-end something, 
+    you can send function as an argument.
+    So when job is done, it will execute the function.
+    This function has to be the last argument.
+    The code executed on front-end is executed by back-end.
+

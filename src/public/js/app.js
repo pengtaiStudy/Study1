@@ -1,55 +1,19 @@
-//This socket means the connection to the server.
-const backSocket = new WebSocket(`ws://${window.location.host}`);
-const messageList = document.querySelector("ul");
-const messageForm = document.querySelector("#message");
-const nickForm = document.querySelector("#nick");
+const socket = io();
+//io function automaticaaly look for the server running socket.io
 
-function makeMessage(type, payload){
-    const msg = {type, payload};
-    return JSON.stringify(msg);
-}
+const welcome = document.getElementById("welcome")
+const form = welcome.querySelector("form");
 
-
-function handleOpen() {
-    console.log("Connected to Server ✅");  // window + ; for inserting emoji.
-}
-
-backSocket.addEventListener("open", handleOpen);
-
-backSocket.addEventListener("message",(message) => {
-    const li = document.createElement("li");
-    li.innerText = message.data;
-    messageList.append(li);
-});
-
-backSocket.addEventListener("close", () =>{
-    console.log("Diconnected from Server ❌");
-});
-
-
-function handleSubmit(event) {
+function handleRoomSubmit(event) {
     event.preventDefault();
-    const input =messageForm.querySelector("input");
-    backSocket.send(makeMessage("new_message", input.value));
-    const li = document.createElement("li");
-    li.innerText = `You : ${input.value}`;
-    messageList.append(li);
-    input.value="";
+    const input = form.querySelector("input");
+    console.log(input);
+    //event, message, function -> sending 3 things.
+    //we can send whatever we want. It doesn't have to only be string.
+    socket.emit("enter_room", { payload: input.value }, () =>{
+        console.log("server is done!");
+    });
+    input.value = "";
 }
 
-function handleNickSubmit(event) {
-    event.preventDefault();
-    const input = nickForm.querySelector("input");
-    backSocket.send(makeMessage("nickname", input.value));
-    input.value="";
-};
-
-messageForm.addEventListener("submit", handleSubmit);
-nickForm.addEventListener("submit", handleNickSubmit);
-
-
-/*
-setTimeout(()=> {
-    backSocket.send("hello from the browser!");
-}, 10000);
-*/
+form.addEventListener("submit", handleRoomSubmit);

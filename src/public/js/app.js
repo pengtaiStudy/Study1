@@ -35,7 +35,7 @@ function handleMuteClick() {
     }
 }
 
-function handleVameraClick(){
+function handleCameraClick(){
     if(cameraOff){
         cameraBtn.innerText = "Turn Camera Off";
         cameraOff = false;
@@ -45,4 +45,4 @@ function handleVameraClick(){
     }
 }
 muteBtn.addEventListener("click", handleMuteClick);
-cameraBtn.addEventListener("click", handleVameraClick);
+cameraBtn.addEventListener("click", handleCameraClick);

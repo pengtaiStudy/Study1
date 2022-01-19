@@ -13,6 +13,7 @@ let muted=false;
 let cameraOff=false;
 let roomName;
 let myPeerConnection;
+let myDataChannel;
 
 async function getCameras(){
     try{
@@ -61,7 +62,6 @@ async function getMedia(deviceId){
 }
 
 function handleMuteClick() {
-    console.log(myStream.getVideoTracks());
     myStream.getAudioTracks().forEach((track) => (track.enabled = !track.enabled));
     if(!muted){
         muteBtn.innerText = "Unmute";
@@ -122,6 +122,9 @@ welcomeForm.addEventListener("submit", handlewelcomeSubmit);
 // Socket code
 
 socket.on("welcome", async ()=>{
+    myDataChannel = myPeerConnection.createDataChannel("chat");
+    myDataChannel.addEventListener("message", (event) => console.log(event.data));
+    console.log("made data channel");
     const offer = await myPeerConnection.createOffer();
     myPeerConnection.setLocalDescription(offer);
     console.log("sent the offer");
@@ -129,15 +132,21 @@ socket.on("welcome", async ()=>{
 });
 
 socket.on("offer", async (offer) =>{
+    myPeerConnection.addEventListener("datachannel", (event) => {
+        myDataChannel = event.channel;
+        myDataChannel.addEventListener("message", (event) =>{
+            console.log(event.data);
+        });
+    });
     console.log("received the offer");
     myPeerConnection.setRemoteDescription(offer);
     const answer = await myPeerConnection.createAnswer();
-    myPeerConnection.setLocalDescription(offer);
+    myPeerConnection.setLocalDescription(answer);
     socket.emit("answer", answer, roomName);
     console.log("sent the answer");
 });
 
-socket.on("answer", answer =>{
+socket.on("answer", (answer) =>{
     console.log("received the answerr");
     myPeerConnection.setRemoteDescription(answer);
 });
@@ -145,7 +154,7 @@ socket.on("answer", answer =>{
 socket.on("ice", (ice) => {
     console.log("received candidate");
     myPeerConnection.addIceCandidate(ice);
-})
+});
 
 // RTC Code
 

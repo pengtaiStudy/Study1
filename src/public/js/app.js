@@ -117,10 +117,15 @@ async function initCall() {
     const input = welcomeForm.querySelector("input");
     await initCall();
     socket.emit("join_room", input.value);
-    roomName = input.value;
+    const input = form.querySelector("input");
+    console.log(input);
+    //event, message, function -> sending 3 things.
+    //we can send whatever we want. It doesn't have to only be string.
+    socket.emit("enter_room", { payload: input.value }, () =>{
+        console.log("server is done!");
+    });
     input.value = "";
-  }
-  
+} 
   welcomeForm.addEventListener("submit", handleWelcomeSubmit);
 
   
@@ -202,3 +207,4 @@ function makeConnection() {
     const peerFace = document.getElementById("peerFace");
     peerFace.srcObject = data.stream;
   }
+

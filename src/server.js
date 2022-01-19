@@ -26,5 +26,25 @@ wsServer.on("connection", (socket) => {
   });
 });
 
-const handleListen = () => console.log(`Listening on http://localhost:3000`);
+/*
+const sockets = [];
+wss.on("connection", (frontSocket) => {
+    sockets.push(frontSocket);
+    frontSocket["nickname"] = "Anon";
+    console.log("Connected to Browser ✔ ");
+    frontSocket.on("close", () =>
+    console.log("Disconnected from the Browser❌"));
+    frontSocket.on("message", (msg) => {
+        const message = JSON.parse(msg);
+        switch(message.type) {
+            case "new_message" :
+                sockets.forEach( (aSocket) => aSocket.send(`${frontSocket.nickname} : ${message.payload}`));
+                case "nickname" :
+                    frontSocket["nickname"] = message.payload;
+                }
+            });
+        });
+        */
+       
+const handleListen = () => console.log(`Listening on http://localhost:3000`)
 httpServer.listen(3000, handleListen);

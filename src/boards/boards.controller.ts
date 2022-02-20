@@ -14,11 +14,10 @@ export class BoardsController {
     }
 
     @Post()
-    //@UsePipes(ValidationPipe)
+    @UsePipes(ValidationPipe)
     createBoard(
             @Body() createBoardDto: CreateBoardDto
         ): Board {
-            console.log("post: "+CreateBoardDto);
             return this.boardsService.createBoard(createBoardDto);
     }
 

@@ -13,14 +13,13 @@ export class BoardsService {
     }
 
     createBoard(createBoardDto: CreateBoardDto){
-        
         const {title, description} = createBoardDto;
         
         const board: Board = {
             id: uuid(),
             title,
             description,
-            status: BoardStatus.PUBILC
+            status: BoardStatus.PUBLIC
         }
         console.log(board);
 

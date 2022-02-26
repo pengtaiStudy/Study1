@@ -1,4 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Board } from './board.entity';
+import { BoardRepository } from './board.repository';
 import { BoardStatus } from './board.status.enum';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -6,7 +9,7 @@ import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe'
 
 @Controller('boards')
 export class BoardsController {
-    // constructor(private boardsService: BoardsService){}
+    constructor(private boardService: BoardsService){}
 
     // @Get('/')
     // getAllBoard(): Board[] {
@@ -20,6 +23,11 @@ export class BoardsController {
     //     ): Board {
     //         return this.boardsService.createBoard(createBoardDto);
     // }
+
+    @Get('/:id')
+    getBoardById(@Param('id') id:number): Promise <Board> {
+        return this.boardService.getBoardId(id);
+    }
 
     // @Get('/:id')
     // getBoardById(@Param('id') id: string): Board{

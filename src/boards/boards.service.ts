@@ -5,6 +5,7 @@ import {v1 as uuid} from 'uuid';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardRepository } from './board.repository';
+import { Board } from './board.entity';
 
 @Injectable()
 export class BoardsService {
@@ -31,6 +32,10 @@ export class BoardsService {
     //     this.boards.push(board);
     //     return board;
     // }
+
+    createBoard(createBoardDto: CreateBoardDto): Promise<Board>{
+        return this.boardRepository.createBoard(createBoardDto);
+    }
 
     async getBoardId(id: number): Promise <Board> {
         const found = await this.boardRepository.findOne(id);

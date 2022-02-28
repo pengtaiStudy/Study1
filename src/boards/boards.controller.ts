@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './board.entity';
 import { BoardRepository } from './board.repository';
@@ -39,6 +39,11 @@ export class BoardsController {
     // getBoardById(@Param('id') id: string): Board{
     //     return this.boardsService.getBoardById(id);
     // }
+
+    @Delete('/:id')
+    deleteBoard(@Param('id', ParseIntPipe) id): Promise<void> {
+        return this.boardService.deleteBoard(id);
+    }
 
     // @Delete('/:id')
     // deleteBoard(@Param('id') id:string): void{

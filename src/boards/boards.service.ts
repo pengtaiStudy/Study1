@@ -6,6 +6,7 @@ import { CreateBoardDto } from './dto/create-board.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardRepository } from './board.repository';
 import { Board } from './board.entity';
+import { of } from 'rxjs';
 
 @Injectable()
 export class BoardsService {
@@ -57,6 +58,15 @@ export class BoardsService {
 
     //     return found;
     // }
+
+    async deleteBoard(id: number): Promise<void> {
+        const result = await this.boardRepository.delete(id);
+
+        if(result.affected === 0) {
+            throw new NotFoundException(`Can't find Board with id ${id}`)
+        }
+        
+    }
 
     // deleteBoard(id: string): void{
     //     const found = this.getBoardById(id);
